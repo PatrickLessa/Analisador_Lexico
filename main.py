@@ -32,29 +32,48 @@ def main():
     print("Entre como uma expressão ou tecle apenas ENTER para encerrar.") 
     expressao = input(PROMPT)
     while expressao != QUIT:
-        lista_tokens = tk.tokeniza(expressao)
-        for token in lista_tokens:
-            # pegue item e tipo
-            item, tipo = token
+        if(expressao == "arquivo"):
+            lista_tokens_arquivo = tk.tokeniza_arquivo()
 
-            # cri string com a descriçao
-            if tipo in [tk.OPERADOR, tk.PARENTESES]:
-                descricao = "'%s' : %s" %(item,op.DESCRICAO[item])
-            elif tipo == tk.VARIAVEL:
-                descricao = "'%s' : nome de variável" %item
-            elif tipo == tk.NUMERO:
-                descricao = "%f : constante float" %item
-            else:
-                descricao = "'%s' : categoria desconhecida" %item
+            for token in lista_tokens_arquivo: 
+                dado, categoria = token
+                if categoria == 0:
+                    descricao = "'%s' : Nome" %dado
+                elif categoria == 1:
+                    descricao = "'%s' : Idade" %dado
+                elif categoria == 2:
+                    descricao = "'%s' : Endereço" %dado
+            
+                print(descricao)
+                
+            # leia próxima expressão    
+            expressao = input(PROMPT)   
 
-            # imprima a descriçao
-            print(descricao)
+        else:
 
-        #cria o grafo da expressao
-        g.create_grafo(lista_tokens)
+            lista_tokens = tk.tokeniza(expressao)
+            for token in lista_tokens:
+                # pegue item e tipo
+                item, tipo = token
 
-        # leia próxima expressão    
-        expressao = input(PROMPT)        
+                # cri string com a descriçao
+                if tipo in [tk.OPERADOR, tk.PARENTESES]:
+                    descricao = "'%s' : %s" %(item,op.DESCRICAO[item])
+                elif tipo == tk.VARIAVEL:
+                    descricao = "'%s' : nome de variável" %item
+                elif tipo == tk.NUMERO:
+                    descricao = "%f : constante float" %item
+                else:
+                    descricao = "'%s' : categoria desconhecida" %item
+
+                # imprima a descriçao
+                print(descricao)
+
+            #cria o grafo da expressao
+            g.create_grafo(lista_tokens)
+
+            # leia próxima expressão    
+            expressao = input(PROMPT)        
 
 #-------------------------------------------
 # início da execução do programa
