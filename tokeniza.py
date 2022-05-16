@@ -153,3 +153,24 @@ def tokeniza(exp):
     expression = findComment(expression)
     separator(expression)
     return token_list
+
+def tokeniza_arquivo():
+    list_token_file = []
+    SEPARATOR = ";"
+    BREAK_LINE = "\n"
+    name = ""
+    age = ""
+    adress = ""
+    cont_separator = 0
+    with open("data.txt", "r") as file:
+        dados = file.readlines()
+
+    for line in dados:
+        line = line.replace(BREAK_LINE, "")
+        list_line = line.split(SEPARATOR)
+        category = 0
+        for element in list_line:
+            list_token_file.append([element.lstrip(), category])
+            category += 1
+        
+    return list_token_file
