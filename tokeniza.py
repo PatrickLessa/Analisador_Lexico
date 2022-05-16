@@ -117,57 +117,87 @@ def tokeniza(exp):
         
 
     def separator(string):
+        # variavel de indice
         index = 0
+
+        # laço até acabar a expressao
         while(index < len(string)):
+
+            # declaração de variáveis auxiliares para cada categoria
             variableStr = ""
             operator = ""
             numberStr = ""
+
+            # verificação se será um float/número
             while(index < len(string) and string[index] in DIGITOS):
+
+                # verifica se a variavel auxiliar de string está vazia, 
+                # para poder dizer se esse numero pertence a um nome de variavel ou nao
                 if(variableStr == ""):
                     numberStr += string[index]
                     index += 1
+
+                # verificia se o próximo caracter a ser lido será um ponto,
+                # indicando se é um numero decimal
                 if(index < len(string) and string[index] == PONTO):
                     numberStr += string[index]
                     index += 1
 
+            # verifica se o caracter pertence a um nome de variável
             while(index < len(string) and string[index] not in OPERADORES and string[index] not in ABRE_FECHA_PARENTESES):
                 variableStr += string[index]
                 index += 1
 
-
+            # verifica se o caracter pertence aos operadores
             while(index < len(string) and string[index] in OPERADORES):
                 operator += string[index]
                 index += 1
 
+            # Verifica se todas as variáveis foram preenchidas,
+            # e se sim, irá adicionar a variavel e sua categoria na lista de tokens
             verifyEmptyVariable(numberStr, NUMERO)
             verifyEmptyVariable(variableStr, VARIAVEL)
             verifyEmptyVariable(operator, OPERADOR)
 
+            # verifica se o caracter pertence aos parenteses
             if(index < len(string) and string[index] in ABRE_FECHA_PARENTESES):
                 token_list.append([string[index], PARENTESES])
                 index += 1
 
 
+    # clona a string da exp, para não alterar a original
     expression = exp
+
+    # limpa os espaços em branco
     expression = cleanWhiteSpace(expression)
+
+    # retorna a exressão sem o comentario
     expression = findComment(expression)
+
+    # analise léxica
     separator(expression)
     return token_list
 
 def tokeniza_arquivo():
     list_token_file = []
+
+    # constantes para o separador dos elementos e quebra de linha
     SEPARATOR = ";"
     BREAK_LINE = "\n"
-    name = ""
-    age = ""
-    adress = ""
-    cont_separator = 0
+
+    # le o arquivo e passa para uma variável
     with open("data.txt", "r") as file:
         dados = file.readlines()
 
+    # Le linha a linha da string do txt
     for line in dados:
+        # retira as quebras de linha
         line = line.replace(BREAK_LINE, "")
+
+        # faz a separação pelo separador definido
         list_line = line.split(SEPARATOR)
+
+        # adiciona os elementos e suas categorias na lista
         category = 0
         for element in list_line:
             list_token_file.append([element.lstrip(), category])
