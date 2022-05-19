@@ -31,6 +31,7 @@ def main():
     '''
     print("Entre como uma expressão ou tecle apenas ENTER para encerrar.") 
     expressao = input(PROMPT)
+    erro = False
     while expressao != QUIT:
         if(expressao == "arquivo"):
             lista_tokens_arquivo = tk.tokeniza_arquivo()
@@ -64,13 +65,16 @@ def main():
                 elif tipo == tk.NUMERO:
                     descricao = "%f : constante float" %item
                 else:
-                    descricao = "'%s' : categoria desconhecida" %item
+                    # descricao = "'%s' : categoria desconhecida" %item
+                    erro = True
+                    print("Valor de '%s' não reconhecido" %item)
 
                 # imprima a descriçao
                 print(descricao)
 
             #cria o grafo da expressao
-            g.create_grafo(lista_tokens)
+            if(erro == False):
+                g.create_grafo(lista_tokens)
 
             # leia próxima expressão    
             expressao = input(PROMPT)        
