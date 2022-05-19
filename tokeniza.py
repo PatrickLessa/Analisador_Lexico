@@ -127,6 +127,7 @@ def tokeniza(exp):
             variableStr = ""
             operator = ""
             numberStr = ""
+            erroStr = ""
 
             # verificação se será um float/número
             while(index < len(string) and string[index] in DIGITOS):
@@ -163,6 +164,12 @@ def tokeniza(exp):
             if(index < len(string) and string[index] in ABRE_FECHA_PARENTESES):
                 token_list.append([string[index], PARENTESES])
                 index += 1
+
+            while(index < len(string) and string[index] not in OPERADORES and string[index] not in ABRE_FECHA_PARENTESES and string[index] not in DIGITOS and string[index] not in LETRAS and string[index] not in PONTO):
+                erroStr += string[index]
+                index += 1
+            
+            verifyEmptyVariable(erroStr, 5)
 
 
     # clona a string da exp, para não alterar a original
